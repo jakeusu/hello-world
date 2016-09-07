@@ -4,7 +4,7 @@
 <script type="text/javascript" src="//platform.linkedin.com/in.js">
     //75yg45wf5h9itq
     //773hd1xznuccvv
-    api_key: 789n2d8njlgknx
+    api_key: 78kvui9d2pw0jq
     scope: w_share
     //onLoad: onLinkedInLoad
     authorize: true
