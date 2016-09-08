@@ -1268,7 +1268,7 @@ function link_Remove(obj){
 
         </div>
 
-        <?php if(strlen($u_group) > 0){ ?>
+        <?php if(strlen($group_name) > 0){ ?>
         <div class="row div-item border1" style="margin-top:0px;">
             <div class="col-sm-6 col-xs-12">
               <div class="col-xs-12">
