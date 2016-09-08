@@ -3,7 +3,7 @@
     //773hd1xznuccvv
     //75m1r350yxrrk5
     //78kvui9d2pw0jq
-    api_key: 78kvui9d2pw0jq
+    api_key: 78mfwbj5aj9mwy
     authorize: true
 </script>
 
@@ -34,7 +34,7 @@
       var iOS = ['iPad', 'iPhone', 'iPod'].indexOf(navigator.platform) >= 0;
         if(1){
               hello.init({
-                linkedin: '78kvui9d2pw0jq'
+                linkedin: '78mfwbj5aj9mwy'
               });
 
               hello('linkedin').login({scope:'email, publish'}).then(function() {

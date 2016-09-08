@@ -9,7 +9,7 @@
       <meta property="og:type" content="website" />
       <meta property="og:title" content="Relayy" />
       <meta property="og:description" content="Web Chat Application" />
-      <meta property="og:url" content="http://app.relayy.io" />
+      <meta property="og:url" content="http://staging.relayy.io" />
       <meta property="og:image" content="<?= asset_base_url()?>/images/onlinkedIn.jpg" />
       <meta property="og:image:width" content="245" />
       <meta property="og:image:height" content="150" />
