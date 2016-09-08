@@ -5,10 +5,7 @@
     //app: 78kvui9d2pw0jq
     //dev: 789n2d8njlgknx
     //staging: 78mfwbj5aj9mwy
-<<<<<<< HEAD
     api_key: 78mfwbj5aj9mwy
-=======
->>>>>>> dev
     scope: w_share
     //onLoad: onLinkedInLoad
     authorize: true
