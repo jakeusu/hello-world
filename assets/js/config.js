@@ -4,7 +4,7 @@ var QBApp = {
   authSecret: 'xR6Bfs9Tdbktx9g'
 };
 
-var base_url = 'app.relayy.io/';
+var base_url = 'dev.relayy.io/';
 
 var config = {
   chatProtocol: {

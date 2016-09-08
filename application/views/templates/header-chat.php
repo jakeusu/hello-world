@@ -9,10 +9,14 @@
       <meta property="og:type" content="website" />
       <meta property="og:title" content="Relayy" />
       <meta property="og:description" content="Web Chat Application" />
-      <meta property="og:url" content="http://app.relayy.io" />
+      <meta property="og:url" content="http://dev.relayy.io" />
       <meta property="og:image" content="<?= asset_base_url()?>/images/onlinkedIn.jpg" />
       <meta property="og:image:width" content="245" />
       <meta property="og:image:height" content="150" />
+
+      <meta name="robots" content="noindex">
+      <meta name="googlebot" content="noindex">
+
       
 
       <title><?php if(isset($page_title)) echo $page_title; ?></title>
