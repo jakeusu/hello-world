@@ -14,6 +14,10 @@
       <meta property="og:image:width" content="245" />
       <meta property="og:image:height" content="150" />
       
+      <meta name="robots" content="noindex">
+      <meta name="googlebot" content="noindex">
+
+      
 
       <title><?php if(isset($page_title)) echo $page_title; ?></title>
       <link rel="shortcut icon" href="<?= asset_base_url()?>/images/favicon.png">
