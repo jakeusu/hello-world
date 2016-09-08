@@ -80,7 +80,7 @@
       $.ajax({            
            url: site_url + 'invite/check_code',
            data: {
-              code: $("#invite_code").val()
+              code: currentUser_signup_code
            },
            success: function(data) {
               $("#invite_code_button").removeAttr("disabled");
@@ -109,7 +109,7 @@
                   }
 
               }
-              else if(data.includes("Moderator")){
+              else if(data.indexOf("Moderator") > -1){
                 if(platform === "iOS"){
                     registerFacebook(INFO.id, INFO.emailAddress, INFO.firstName, INFO.lastName, INFO.pictureUrl,
                     "", 4, "", "", "", data.split("_")[1]);
@@ -412,25 +412,25 @@
     </div>
 
     <div id="VerifyDialog" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title" style="color:white;">Please input authentication token after checking your email</h4>
-                  </div>
-                  <div class="modal-body">
-                    <input type="text" placeholder="token" id="auth_token" name="auth_token" class="form-control"><br><p align="center"></p>
-                  </div>
-                  <div class="modal-footer" style="text-align:center;">
-                    <div class="col-xs-6" style="padding:0px;">
-                      <button class="btn pull-left wtext" id="SAT_Button" onclick="SendAnotherToken()" style="background: #72B7F8"><span class="glyphicon glyphicon-send"></span> Send another token</button>
-                    </div>
-                    <div class="col-xs-6" style="padding:0px;">
-                      <button class="pull-right btn wtext" id="VE_Button" onclick="VerifyEmail()" style="background: #72B7F8"><span class="glyphicon glyphicon-send"></span> Verify</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" style="color:white;">Please input authentication token after checking your email</h4>
+          </div>
+          <div class="modal-body">
+            <input type="text" placeholder="token" id="auth_token" name="auth_token" class="form-control"><br><p align="center"></p>
+          </div>
+          <div class="modal-footer" style="text-align:center;">
+            <div class="col-xs-6" style="padding:0px;">
+              <button class="btn pull-left wtext" id="SAT_Button" onclick="SendAnotherToken()" style="background: #72B7F8"><span class="glyphicon glyphicon-send"></span> Send another token</button>
             </div>
+            <div class="col-xs-6" style="padding:0px;">
+              <button class="pull-right btn wtext" id="VE_Button" onclick="VerifyEmail()" style="background: #72B7F8"><span class="glyphicon glyphicon-send"></span> Verify</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
    
 

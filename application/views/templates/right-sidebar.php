@@ -18,264 +18,26 @@
     var title = "Create New ";
     $(".sidepanel").css("display", "none");
     if (type == 1) {
-        title += "1:1 Chat";
-        BootstrapDialog.show({
-            type: BootstrapDialog.TYPE_PRIMARY,
-            title: title,
-            message: '<div id="channel_edit">'+
-                      '<label class="d-label">'+
-                        '<span>CHAT WITH</span>'+
-                        '<div class="row canvas">'+
-                          '<input type="text" placeholder="Search email" id="add_email" onkeyup="handle(event, this)">'+
-                          '<button class="ob pull-right" onclick="add_non_user_to_private()" style="position:absolute;top:5px;right:5px;">add</button>'+
-                        '</div>'+
-                      '</label>'+
-
-                      '<ul id="selected" class="row setting-item">'+
-                      '</ul>'+
-
-                      '<ul id="contacts" class="scrollbar row setting-item">'+
-                      '</ul>'+
-                      '</div>',
-            buttons: [{
-                label: 'Cancel',
-                action: function(dialogRef){
-                    dialogRef.close();
-                }
-            }, {
-                label: 'Create Chat',
-                cssClass: 'btn-primary',
-                icon: 'glyphicon glyphicon-send font-10',
-                autospin: true,
-                action: function(dialogRef){
-                  var params = {
-                    type: 1,
-                    name: "Private"
-                  };
-
-                  QB.chat.dialog.create(params, function(err, createdDialog) {
-                    if (err) {
-                      console.log(err);
-                      alert(err);
-                    } else {
-                      var occupants = [];
-                      var sendEmail = "";
-                      if(p_ids == 1) sendEmail = p_users;
-                      if(sendEmail !== ""){
-                          $.ajax({
-                             url: site_url + "users/invite/"+ 3 + "/" + sendEmail.replace("@", "%40") + "/<?php echo isset($page)?$page:'4';?>",
-                             data: {
-                                email: sendEmail
-                             },
-                             success: function(data) {
-                                          mydata = data.split("\n");
-                                          occupants.push([sendEmail, mydata[0]]);   
-                                          $.ajax({
-                                            url: site_url + 'chat/newChat',
-                                            data: {
-                                              did: createdDialog._id,
-                                              jid: createdDialog.xmpp_room_jid,
-                                              type: <?= CHAT_TYPE_PRIVATE?>,
-                                              dname: "Private",
-                                              ddesc: "1:1 chat",
-                                              occupants: occupants
-                                            },
-                                            success: function(data) {
-                                              if (data == "new"){
-                                                location.href = site_url + 'chat/channel/' + createdDialog._id;
-                                              }
-                                              else{
-                                                location.href = site_url + 'chat/channel/' + data;
-                                              }
-                                            
-                                            },
-                                            type: 'POST'
-                                          });
-
-
-                            },
-                           type: 'POST'
-                          });                             
-                      }
-                      else{
-                        occupants.push([$("#selected li").data("email"), $("#selected li").data("uid")]);
-                        $.ajax({
-                           url: site_url + 'chat/newChat',
-                           data: {
-                              did: createdDialog._id,
-                              jid: createdDialog.xmpp_room_jid,
-                              type: <?= CHAT_TYPE_PRIVATE?>,
-                              dname: "Private",
-                              ddesc: "1:1 chat",
-                              occupants: occupants
-                           },
-                           success: function(data) {
-                              if (data == "new"){
-                                location.href = site_url + 'chat/channel/' + createdDialog._id;
-                              }
-                              else{
-                                location.href = site_url + 'chat/channel/' + data;
-                              }
-                           },
-                           type: 'POST'
-                        });
-                      }                     
-                                  
-                        
-                    }
-                  });
-                }
-            }]
-        });
-        
+        $("#NewPrivateChatDialog").modal("show");
         getUsers('', function(data) {
           buildUsersHTML(data, '', 1);
         });
+        // When the popup shows, sidepanel disappears (not found the reason) => force fixed
+        var state = $(".chat-more-button").text();
+        if(state === "HIDE DETAILS") $(".sidepanel").show();
+        else $(".sidepanel").hide();
+        
     } else {
-        title += "Group Chat";
         g_users = [];
         g_ids = [];
-        BootstrapDialog.show({
-            type: BootstrapDialog.TYPE_PRIMARY,
-            title: title,
-            message: '<div id="channel_edit">'+
-                     '<label class="d-label">'+
-                        '<span>DETAILS</span>'+
-                        '<input type="text" placeholder="Group chat name" id="groupname" onkeyup="enterhandle(event, this)">'+
-                      '</label>'+
-                      '<label class="d-label">'+
-                        '<span>ADD MEMBERS</span>'+
-                        '<div class="row canvas">'+
-                        '<input type="text" placeholder="Search email" id="add_email" onkeyup="handle(event, this)">'+
-                        '<button class="ob pull-right" onclick="add_non_user()" style="position:absolute;top:5px;right:5px;">add</button>'+
-                        '</div>'+
-                      '</label>'+
-
-                      '<ul id="selected" class="row setting-item">'+
-                      '</ul>'+
-
-                      '<ul id="contacts" class="scrollbar row setting-item">'+
-                      '</ul>'+
-                      '</div>',
-            buttons: [{
-                label: 'Cancel',
-                action: function(dialogRef){
-                    dialogRef.close();
-                }
-            }, {
-                label: 'Create Chat',
-                cssClass: 'btn-primary',
-                icon: 'glyphicon glyphicon-send font-10',
-                autospin: true,                
-                action: function(dialogRef) {
-                  
-                  if($("#groupname").val() === ""){
-                    alert("Groupname is empty!");
-                    return;                    
-                  }
-
-                  if(g_users.length == 0){
-                    alert("You didn't select users.");
-                    return;
-                  }
-
-                  var params = {
-                    type: 1,
-                    name: $("#groupname").val()
-                  };
-                  QB.chat.dialog.create(params, function(err, createdDialog) {
-                    if (err) {
-                      console.log(err);
-                      alert(err);
-                    } else {
-                      var occupants = [];
-                      var sendEmail = "";
-                      for(var i=0; i<g_ids.length; i++){
-                        if(g_ids[i] == 1){
-                          if(sendEmail !== "") sendEmail += ",";
-                          sendEmail += g_users[i];
-                        }
-                      }
-                      if(sendEmail !== ""){
-                          $.ajax({
-                             url: site_url + "users/invite/"+ 3 + "/" + sendEmail.replace(/@/g, "%40").replace(/,/g, "%2c") + "/<?php echo isset($page)?$page:'4';?>",
-                             data: {},
-                             success: function(data) {
-                                          mydata = data.split("\n");
-                                          var e = sendEmail.split(",");
-                                          var i = mydata[0].split("/");
-                                          for(var k=0; k<e.length; k++){
-                                            occupants.push([e[k], i[k]]);  
-                                          }                                          
-                                          $("#selected li").each(function(){
-                                            if($(this).data("uid") == 1) return;
-                                            occupants.push([$(this).data("email"), $(this).data("uid")]);
-                                          });
-                                          //alert(JSON.stringify(occupants));
-                                          $.ajax({
-                                             url: site_url + 'chat/newChat',
-                                             data: {
-                                                did: createdDialog._id,
-                                                jid: createdDialog.xmpp_room_jid,
-                                                type: <?= CHAT_TYPE_GROUP?>,
-                                                dname: $("#groupname").val(),
-                                                ddesc: $("#groupdesc").val(),
-                                                occupants: occupants
-                                             },
-                                             success: function(data) {
-                                                if (data != "exist"){
-                                                  location.reload();
-                                                }
-                                                else
-                                                  alert("The chat is already exist.");
-                                             },
-                                             type: 'POST'
-                                        });
-
-
-                            },
-                           type: 'POST'
-                          });                             
-                      }else{
-                        $("#selected li").each(function(){
-                          occupants.push([$(this).data("email"), $(this).data("uid")]);
-                        });
-                        if(g_users.length == 0){
-                          alert('You did not select anyone.');
-                          return;
-                        }
-                        $.ajax({
-                           url: site_url + 'chat/newChat',
-                           data: {
-                              did: createdDialog._id,
-                              jid: createdDialog.xmpp_room_jid,
-                              type: <?= CHAT_TYPE_GROUP?>,
-                              dname: $("#groupname").val(),
-                              ddesc: $("#groupdesc").val(),
-                              occupants: occupants
-                           },
-                           success: function(data) {
-                              if (data == "new"){
-                                location.href = site_url + 'chat/channel/' + createdDialog._id;
-                              }
-                              else{
-                                location.href = site_url + 'chat/channel/' + data;
-                              }
-                           },
-                           type: 'POST'
-                      });
-                      }
-                      
-                      
-                    }
-                  });
-                }
-            }]
-        });
-
+        $("#NewGroupChatDialog").modal("show");
         getUsers('', function(data) {
           buildUsersHTML(data, '', 2);
         });
+        
+        var state = $(".chat-more-button").text();
+        if(state === "HIDE DETAILS") $(".sidepanel").show();
+        else $(".sidepanel").hide();
 
     }  
   }
@@ -298,132 +60,14 @@
       return re.test(email);
   }
 
-    function addMember(did, userIDs) {
+  function addMember(did, userIDs) {
+        $("#AddMemberDialog").modal("show");
         g_users = [];
         g_ids = [];
-        title = "Add New Members";
-        BootstrapDialog.show({
-            type: BootstrapDialog.TYPE_PRIMARY,
-            title: title,
-            message: '<div id="channel_edit">'+
-                      '<label class="d-label">'+
-                        '<span>ADD MEMBERS</span>'+
-                          '<div class="row canvas">'+
-                          '<input type="text" placeholder="Enter email" id="add_email" onkeyup="handle(event, this)">'+
-                          '<button class="ob pull-right" onclick="add_non_user()" style="position:absolute;top:5px;right:5px;">add</button>'+
-                          '</div>'+
-                      '</label>'+
-
-                      '<ul id="selected" class="row setting-item">'+
-                      '</ul>'+
-
-                      '<ul id="contacts" class="scrollbar row setting-item">'+
-                      '</ul>'+
-                      '</div>',
-            buttons: [{
-                label: 'Cancel',
-                action: function(dialogRef){
-                    dialogRef.close();
-                }
-            }, {
-                label: 'Send Invite',
-                cssClass: 'btn-primary',
-                icon: 'glyphicon glyphicon-send font-10',
-                autospin: true,                
-                action: function(dialogRef) {  
-                  if(g_users.length == 0){
-                    alert("You didn't select users.");
-                    return;
-                  }
-
-                  var occupants = [];
-                  var sendEmail = "";
-                  for(var i=0; i<g_ids.length; i++){
-                    if(g_ids[i] == 1){
-                      if(sendEmail !== "") sendEmail += ",";
-                      sendEmail += g_users[i];
-                    }
-                  }
-                  if(sendEmail !== ""){
-                    $.ajax({
-                                 url: site_url + "users/invite/"+ 2 + "/" + sendEmail.replace("@", "%40") + "/<?php echo isset($page)?$page:'4';?>",
-                                 data: {
-                                    email: sendEmail
-                                 },
-                                 success: function(data) {
-                                    mydata = data.split("\n");
-                                    var e = sendEmail.split(",");
-                                    var i = mydata[0].split("/");
-                                    for(var k=0; k<e.length; k++){
-                                      occupants.push([e[k], i[k]]);  
-                                    }                                          
-                                    $("#selected li").each(function(){
-                                      if($(this).data("uid") == 1) return;
-                                      occupants.push([$(this).data("email"), $(this).data("uid")]);
-                                    });
-                                    
-                                    $.ajax({
-                                         url: site_url + 'chat/addMember',
-                                         data: {
-                                            did: did,
-                                            occupants: occupants
-                                         },
-                                         success: function(data) {
-                                            if (data == "success")
-                                              location.reload();
-                                            else
-                                              alert(data);
-                                         },
-                                         type: 'POST'
-                                    });
-                                  },
-                                 type: 'POST'
-                            });
-                  }
-                  else{
-                    $("#selected li").each(function(){
-                      occupants.push([$(this).data("email"), $(this).data("uid")]);
-                    });
-                    if(occupants.length == 0){
-                      alert("You selected nothing.");
-                      return;
-                    }
-
-                                    
-                    $.ajax({
-                         url: site_url + 'chat/addMember',
-                         data: {
-                            did: did,
-                            occupants: occupants
-                         },
-                         success: function(data) {
-                            if (data == "success")
-                              location.reload();
-                            else
-                              alert(data);
-                         },
-                         type: 'POST'
-                    });
-                  }
-
-                  
-                }
-            }]
-        });
-
         getUsers('', function(data) {
-          buildUsersHTML(data, '', 2, userIDs);
-        });
+          buildUsersHTML(data, '', 2, userIDs);//3rd param: selection method(1:1 or group)
+        });        
     }
-
-    $(".chat_with_text").on('input', function(){
-        var text = $(this).val();
-        $(".contact_available_user").each(function(){
-          if($(this).find(".contacts_name").text().toLowerCase().indexOf(text.toLowerCase()) >= 0) $(this).show();
-          else $(this).hide();
-        }); 
-    });
-
 
     function handle(e, object) {
         var text = $(object).val();
@@ -433,12 +77,6 @@
           else $(this).hide();
         }); 
     }
-
-    function enterhandle(e, object) {
-        
-    }
-
-
 
     // var chatusers = [];
     function getUsers(email, callback) {
@@ -458,7 +96,8 @@
     }
 
     function buildUsersHTML(json, email, type, userIDs) {
-        $(".modal-open ul#contacts").html("");
+        if(type == 2) $("#g_contacts").html("");
+        else $("#p_contacts").html("");
         if (json.length == 0 && email) {
             json.push({email:email, fname:"", lname:"", photo:"", uid:""});
         }
@@ -482,7 +121,11 @@
                             '<div class="col-xs-1"><div class="glyphicon check-box-15 pull-right text-primary" aria-hidden="true" onclick="clkSelect(this, '+type+',\''+userName+'\', \''+item.email+'\', \''+item.id+'\')" style="border:1px solid;"></div></div>'+
                             '</li>';
             // alert(htmlTxt);
-            $("#contacts").append(htmlTxt);
+            if(type == 2){
+              $("#g_contacts").append(htmlTxt);
+              $("#a_contacts").append(htmlTxt);
+            } 
+            else $("#p_contacts").append(htmlTxt);
         });
     }
 
@@ -492,14 +135,19 @@
             $(obj).addClass("glyphicon-ok");
             $(obj).removeClass("check-box-15");
             var htmlTxt = '<li class="online_tags pull-left" data-email="'+email+'" data-uid="'+uid+'">'+uname+'</li>';
-            $(".modal-open #selected").html(htmlTxt);
+            $("#p_selected").html(htmlTxt);
             p_users = name;
             p_ids = uid;
         } else {//group chat
             if ($(obj).hasClass('glyphicon-ok')) {
                 $(obj).removeClass('glyphicon-ok');
                 $(obj).addClass("check-box-15");
-                $("#selected li").each(function(){
+                $("#g_selected li").each(function(){
+                    if ($(this).attr("data-uid") == uid) {
+                        $(this).remove();
+                    }
+                });
+                $("#a_selected li").each(function(){
                     if ($(this).attr("data-uid") == uid) {
                         $(this).remove();
                     }
@@ -509,7 +157,8 @@
                 $(obj).addClass('glyphicon-ok');
                 $(obj).removeClass('check-box-15');
                 var htmlTxt = '<li class="online_tags pull-left" data-email="'+email+'" data-uid="'+uid+'">'+uname+'<a class="close x" style="color:white;" onclick="contact_remove(this, \''+uname+'\','+uid+')">&times;</a></li>';
-                $("#selected").append(htmlTxt);
+                $("#g_selected").append(htmlTxt);
+                $("#a_selected").append(htmlTxt);
                 contact_add(uname, uid);
             }
         }
@@ -538,48 +187,327 @@
     }
 
     function add_non_user(){
-      var email = $("#add_email").val();
+      var email = $("#g_add_email").val();
       if(!validateEmail(email)){
         alert(email + " is invalid email.");
         return;
       }
       contact_add(email, 1);//non-user's uid 1 !
       var htmlTxt = '<li class="online_tags pull-left" data-email="'+email+'" data-uid="1">'+email+'<a class="close x" style="color:white;" onclick="contact_remove(this, \''+email+'\', 1)">&times;</a></li>';
-      $("#selected").append(htmlTxt);
-      $("#add_email").val("");
+      $("#g_selected").append(htmlTxt);
+      $("#g_add_email").val("");
     }
 
-    function tagClose(obj) {
-        var strTxt = $(obj).parent().text();
-        $("#contacts li.selected").each(function(){
-            if(strTxt.indexOf($(this).find(".contacts_name").text())==0) {
-                $(this).removeClass("selected");
-                $(obj).parent().remove();
-            }
-        })
-    }
-
-    function add_non_user_to_private(){
-      var email = $("#add_email").val();
+    function add_non_user_to_add(){
+      var email = $("#a_add_email").val();
       if(!validateEmail(email)){
         alert(email + " is invalid email.");
         return;
       }
-      $("#selected li").each(function(){
+      contact_add(email, 1);//non-user's uid 1 !
+      var htmlTxt = '<li class="online_tags pull-left" data-email="'+email+'" data-uid="1">'+email+'<a class="close x" style="color:white;" onclick="contact_remove(this, \''+email+'\', 1)">&times;</a></li>';
+      $("#a_selected").append(htmlTxt);
+      $("#a_add_email").val("");
+    }
+
+    function add_non_user_to_private(){
+      var email = $("#p_add_email").val();
+      if(!validateEmail(email)){
+        alert(email + " is invalid email.");
+        return;
+      }
+      $("#p_selected li").each(function(){
           $(this).removeClass("glyphicon-ok").addClass("check-box-15");
       });
       var htmlTxt = '<div class="online_tags pull-left" data-email="'+email+'" data-uid="1">'+email+'</div>';
-      $(".modal-open #selected").html(htmlTxt);
+      $("#p_selected").html(htmlTxt);
       p_users = email;
       p_ids = 1;
+    }
+
+    //=================================================================================================================
+    //  2016/9/07  bootstrap modal => html modal
+    //=================================================================================================================
+
+    function onCancelNG(){
+      $("#NewGroupChatDialog").modal("hide");
+    }
+
+    function onCreateNG(){
+        if($("#groupname").val() === ""){
+          alert("Groupname is empty!");
+          return;                    
+        }
+
+        if(g_users.length == 0){
+          alert("You didn't select users.");
+          return;
+        }
+
+        var params = {
+          type: 1,
+          name: $("#groupname").val()
+        };
+        QB.chat.dialog.create(params, function(err, createdDialog) {
+          if (err) {
+            console.log(err);
+            alert(err);
+          } else {
+            var occupants = [];
+            var sendEmail = "";
+            for(var i=0; i<g_ids.length; i++){
+              if(g_ids[i] == 1){
+                if(sendEmail !== "") sendEmail += ",";
+                sendEmail += g_users[i];
+              }
+            }
+            if(sendEmail !== ""){
+                $.ajax({
+                   url: site_url + "users/invite/"+ 3 + "/" + sendEmail.replace(/@/g, "%40").replace(/,/g, "%2c") + "/<?php echo isset($page)?$page:'4';?>",
+                   data: {},
+                   success: function(data) {
+                                mydata = data.split("\n");
+                                var e = sendEmail.split(",");
+                                var i = mydata[0].split("/");
+                                for(var k=0; k<e.length; k++){
+                                  occupants.push([e[k], i[k]]);  
+                                }                                          
+                                $("#g_selected li").each(function(){
+                                  if($(this).data("uid") == 1) return;
+                                  occupants.push([$(this).data("email"), $(this).data("uid")]);
+                                });
+                                //alert(JSON.stringify(occupants));
+                                $.ajax({
+                                   url: site_url + 'chat/newChat',
+                                   data: {
+                                      did: createdDialog._id,
+                                      jid: createdDialog.xmpp_room_jid,
+                                      type: <?= CHAT_TYPE_GROUP?>,
+                                      dname: $("#groupname").val(),
+                                      ddesc: $("#groupdesc").val(),
+                                      occupants: occupants
+                                   },
+                                   success: function(data) {
+                                      if (data != "exist"){
+                                        location.reload();
+                                      }
+                                      else
+                                        alert("The chat is already exist.");
+                                   },
+                                   type: 'POST'
+                              });
+
+
+                  },
+                 type: 'POST'
+                });                             
+            }else{
+              $("#g_selected li").each(function(){
+                occupants.push([$(this).data("email"), $(this).data("uid")]);
+              });
+              if(g_users.length == 0){
+                alert('You did not select anyone.');
+                return;
+              }
+              $.ajax({
+                 url: site_url + 'chat/newChat',
+                 data: {
+                    did: createdDialog._id,
+                    jid: createdDialog.xmpp_room_jid,
+                    type: <?= CHAT_TYPE_GROUP?>,
+                    dname: $("#groupname").val(),
+                    ddesc: $("#groupdesc").val(),
+                    occupants: occupants
+                 },
+                 success: function(data) {
+                    if (data == "new"){
+                      location.href = site_url + 'chat/channel/' + createdDialog._id;
+                    }
+                    else{
+                      location.href = site_url + 'chat/channel/' + data;
+                    }
+                 },
+                 type: 'POST'
+            });
+            }
+            
+            
+          }
+        });
+    }
+
+    function onCancelNP(){
+      $("#NewPrivateChatDialog").modal("hide");
+    }
+
+    function onCreateNP(){
+      var params = {
+        type: 1,
+        name: "Private"
+      };
+
+      QB.chat.dialog.create(params, function(err, createdDialog) {
+        if (err) {
+          console.log(err);
+          alert(err);
+        } else {
+          var occupants = [];
+          var sendEmail = "";
+          if(p_ids == 1) sendEmail = p_users;
+          if(sendEmail !== ""){
+              $.ajax({
+                 url: site_url + "users/invite/"+ 3 + "/" + sendEmail.replace("@", "%40") + "/<?php echo isset($page)?$page:'4';?>",
+                 data: {
+                    email: sendEmail
+                 },
+                 success: function(data) {
+                              mydata = data.split("\n");
+                              occupants.push([sendEmail, mydata[0]]);   
+                              $.ajax({
+                                url: site_url + 'chat/newChat',
+                                data: {
+                                  did: createdDialog._id,
+                                  jid: createdDialog.xmpp_room_jid,
+                                  type: <?= CHAT_TYPE_PRIVATE?>,
+                                  dname: "Private",
+                                  ddesc: "1:1 chat",
+                                  occupants: occupants
+                                },
+                                success: function(data) {
+                                  if (data == "new"){
+                                    location.href = site_url + 'chat/channel/' + createdDialog._id;
+                                  }
+                                  else{
+                                    location.href = site_url + 'chat/channel/' + data;
+                                  }
+                                
+                                },
+                                type: 'POST'
+                              });
+
+
+                },
+               type: 'POST'
+              });                             
+          }
+          else{
+            occupants.push([$("#p_selected li").data("email"), $("#p_selected li").data("uid")]);
+            $.ajax({
+               url: site_url + 'chat/newChat',
+               data: {
+                  did: createdDialog._id,
+                  jid: createdDialog.xmpp_room_jid,
+                  type: <?= CHAT_TYPE_PRIVATE?>,
+                  dname: "Private",
+                  ddesc: "1:1 chat",
+                  occupants: occupants
+               },
+               success: function(data) {
+                  if (data == "new"){
+                    location.href = site_url + 'chat/channel/' + createdDialog._id;
+                  }
+                  else{
+                    location.href = site_url + 'chat/channel/' + data;
+                  }
+               },
+               type: 'POST'
+            });
+          }                     
+                      
+            
+        }
+      });
+    }
+
+    function onCancelAM(){
+      $("#AddMemberDialog").hide();
+    }
+
+    function onAddMember(){
+        if(g_users.length == 0){
+          alert("You didn't select users.");
+          return;
+        }
+
+        var occupants = [];
+        var sendEmail = "";
+        for(var i=0; i<g_ids.length; i++){
+          if(g_ids[i] == 1){
+            if(sendEmail !== "") sendEmail += ",";
+            sendEmail += g_users[i];
+          }
+        }
+        if(sendEmail !== ""){
+          $.ajax({
+                       url: site_url + "users/invite/"+ 3 + "/" + sendEmail.replace("@", "%40") + "/<?php echo isset($page)?$page:'4';?>",
+                       data: {
+                          email: sendEmail
+                       },
+                       success: function(data) {
+                          mydata = data.split("\n");
+                          var e = sendEmail.split(",");
+                          var i = mydata[0].split("/");
+                          for(var k=0; k<e.length; k++){
+                            occupants.push([e[k], i[k]]);  
+                          }                                          
+                          $("#a_selected li").each(function(){
+                            if($(this).data("uid") == 1) return;
+                            occupants.push([$(this).data("email"), $(this).data("uid")]);
+                          });
+                          
+                          $.ajax({
+                               url: site_url + 'chat/addMember',
+                               data: {
+                                  did: currentDialogID,
+                                  occupants: occupants
+                               },
+                               success: function(data) {
+                                  if (data == "success")
+                                    location.reload();
+                                  else
+                                    alert(data);
+                               },
+                               type: 'POST'
+                          });
+                        },
+                       type: 'POST'
+                  });
+        }
+        else{
+          $("#a_selected li").each(function(){
+            occupants.push([$(this).data("email"), $(this).data("uid")]);
+          });
+          if(occupants.length == 0){
+            alert("You selected nothing.");
+            return;
+          }
+
+                          
+          $.ajax({
+               url: site_url + 'chat/addMember',
+               data: {
+                  did: did,
+                  occupants: occupants
+               },
+               success: function(data) {
+                  if (data == "success")
+                    location.reload();
+                  else
+                    alert(data);
+               },
+               type: 'POST'
+          });
+        }
     }
 
 
 
 </script>
+</div>	 
 </div>
 
-	 
-</div>
 </body>
 </html>
+
+
+

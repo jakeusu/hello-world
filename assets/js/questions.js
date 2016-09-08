@@ -310,7 +310,6 @@ function uploadImage(obj) {
                           alert(data);                            
                         }
                         $(obj).parent().parent().parent().find('p').remove();
-
                         
                         
                   }
@@ -487,6 +486,40 @@ function deleteRouter(d_id){
   });
 }
 
+function deleteWaiter(d_id){   
+  
+
+  BootstrapDialog.show({
+        type: BootstrapDialog.TYPE_PRIMARY,
+        title: 'Warnning',
+        message: 'are you sure you want to delete this user?',
+        buttons: [{
+            label: 'Cancel',
+            cssClass: 'btn-primary',
+            action: function(dialogRef) {  
+                dialogRef.close();
+            }
+        },{
+            label: 'Yes',
+            cssClass: 'btn-primary',
+            action: function(dialogRef) {  
+                    $.ajax({
+                      url: site_url + 'questions/deleteWaiter',
+                       data: {
+                          q_id: QuestionID,
+                          u_id: d_id
+                       },
+                       success: function(data) {
+                          location.reload();
+                       },
+                       type: 'POST'
+                    });
+                
+            }
+        }]
+  });
+}
+
 function getRouterUsers(email, callback) {
     $.ajax({
        url: site_url + 'chat/users',
@@ -503,10 +536,10 @@ function getRouterUsers(email, callback) {
     });
 }
 
-function buildRoutersHTML(json, email, str_r_ids, q_id) {
+function buildRoutersHTML(json, email, str_r_ids, q_id, type) {
 
   AcceptUserIDArray = str_r_ids.split(" ");
-    $("#routed-contacts").html("");
+    $("#q_contacts").html("");
     if (json.length == 0 && email) {
         json.push({email:email, fname:"", lname:"", photo:"", uid:""});
     }
@@ -522,59 +555,37 @@ function buildRoutersHTML(json, email, str_r_ids, q_id) {
         var index = AcceptUserIDArray.indexOf(item.id);
         if (index == -1) return;
         var htmlTxt;
-        if(currentUser_type == 1) htmlTxt = '<li style="padding:10px;border-bottom: 1px solid #eee;"><span onclick="deleteRouter(' + item.id + ')" class="glyphicon glyphicon-trash pull-right text-primary"></span>';
-        else htmlTxt = '<li style="padding:10px;border-bottom: 1px solid #eee;">';         
+        if(currentUser_type == 1 && type == 1) htmlTxt = '<li style="padding:10px;"><span onclick="deleteRouter(' + item.id + ')" class="glyphicon glyphicon-trash pull-right text-primary"></span>';
+        else if(currentUser_type == 1 && type == 2) htmlTxt = '<li style="padding:10px;"><span onclick="deleteWaiter(' + item.id + ')" class="glyphicon glyphicon-trash pull-right text-primary"></span>';
+        else htmlTxt = '<li style="padding:10px;">';         
         if (item.photo) htmlTxt += '<img class="avatar avatar_small" src="'+item.photo+'">';
         htmlTxt = htmlTxt +       '<span class="contacts_name">'+userName+'</span>'+                        
                     '</li>';
         // alert(htmlTxt);
-        $("#routed-contacts").append(htmlTxt);
+        $("#q_contacts").append(htmlTxt);
     });
 }
 
 function viewRouteList(q_id, title, str_r_ids){
   QuestionID = q_id;
-  RouterListDialog = BootstrapDialog.show({
-        type: BootstrapDialog.TYPE_PRIMARY,
-        title: 'ROUTE LIST of "'+ title + '"',
-        message: '<div id="channel_edit">'+                      
-                      '<ul id="routed-contacts" style="height:40vh;">'+ 
-                                           
-                      '</ul>'+
-                 '</div>',
-        buttons: [{
-            label: 'Close',
-            cssClass: 'btn-primary',
-            action: function(dialogRef) {  
-                dialogRef.close();
-            }
-        }]
-  });
+  $("#ShowUserListDialog").modal("show");
+  $("#question-popup-title").text("ROUTE LIST of " + title);
   getRouterUsers('', function(data) {
-      buildRoutersHTML(data, '',str_r_ids, q_id);
+      buildRoutersHTML(data, '',str_r_ids, q_id, 1);
   });
 }
 
 function viewWaitingList(q_id, title, str_a_ids){
-  RouterListDialog = BootstrapDialog.show({
-        type: BootstrapDialog.TYPE_PRIMARY,
-        title: 'Waiting Advisors of "'+ title + '"',
-        message: '<div id="channel_edit">'+                      
-                      '<ul id="routed-contacts" style="height:40vh;">'+ 
-                                           
-                      '</ul>'+
-                 '</div>',
-        buttons: [{
-            label: 'Close',
-            cssClass: 'btn-primary',
-            action: function(dialogRef) {  
-                dialogRef.close();
-            }
-        }]
-  });
+  QuestionID = q_id;
+  $("#ShowUserListDialog").modal("show");
+  $("#question-popup-title").text("Waiting Advisors of " + title);
   getRouterUsers('', function(data) {
-      buildRoutersHTML(data, '',str_a_ids, q_id);
+      buildRoutersHTML(data, '',str_a_ids, q_id, 2);
   });
+}
+
+function onCancelPopup(){
+  $("#ShowUserListDialog").modal("hide");
 }
 
 function passFeed(q_id, c_id, b_accept, body_class){

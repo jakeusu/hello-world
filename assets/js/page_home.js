@@ -52,7 +52,6 @@ function LoginUser(uid, email, fname, lname, picture, bio, role, location, publi
 
 function registerFacebook(uid, email, fname, lname, picture, bio, role, location, public_url, company, group) {
   var params = { 'login': email, 'password': QBApp.authKey, 'full_name': fname+" "+lname, 'email': email };
-  
   var filters = {filter: { field: 'email', param: 'eq', value: email }};
 
   QB.users.listUsers(filters, function(err, result){
@@ -104,7 +103,6 @@ function registerFacebook(uid, email, fname, lname, picture, bio, role, location
        type: 'POST'
       });
     } else if (result && result.items.length == 0) {
-      
       QB.users.create(params, function(err, user){//=========== New User in QuiclBlox
         if (user) {
               $("#loginForm").modal("hide");

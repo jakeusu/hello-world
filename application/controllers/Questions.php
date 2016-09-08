@@ -439,7 +439,19 @@ class Questions extends ChatController
 	   	$data_arr = array(TBL_QUESTION_ROUTE_IDS => $r_ids, TBL_QUESTION_ID=>$q_id);
 		   	echo $this->mquestions->updateRoute($q_id, $data_arr);
 
-		echo "success";
+	}
+
+	public function deleteWaiter(){
+		$q_id = $this->input->post('q_id');
+
+	   	$u_id = $this->input->post('u_id');
+	   	$que = $this->mquestions->getQuestionwithID($q_id);
+
+	   	$new_waiters = array_diff(json_decode($que[TBL_QUESTION_WAIT_IDS]), array($u_id));
+	   	$new_accepters = array_diff(json_decode($que[TBL_QUESTION_ACCEPT_IDS]), array($u_id));
+	   	$data_arr = array(TBL_QUESTION_WAIT_IDS => json_encode($new_waiters), TBL_QUESTION_ACCEPT_IDS => json_encode($new_accepters), TBL_QUESTION_ID=>$q_id);
+		echo $this->mquestions->updateRoute($q_id, $data_arr);
+
 	}
 
 	public function load_question_list(){

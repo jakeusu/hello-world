@@ -273,7 +273,7 @@ function clickSendAttachments(inputFile) {
   var imageExts = ["png", "jpg", "jpeg", "PNG", "JPG", "JPEG"];
   var flag = 0;
   for(var i=0;i<imageExts.length;i++){
-    if(inputFile.type.indexOf(imageExts[i]) > -1){
+    if(typeof(inputFile) !== "undefined" && inputFile.type.indexOf(imageExts[i]) > -1){
       flag = 1;
       break;
     } 

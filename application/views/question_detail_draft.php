@@ -295,16 +295,12 @@
 
 <div class="container-widget question-container canvas" style="height:100vh;margin-top:70px;padding:0px 10px;">
     
-        
+
 
 <div class="desktop-visible-item">
 
-      
-
       <div class="row white_back" style="padding:10px 20px 0px 20px;margin:-10px;">
-         
         <h3 class="pull-left gray-text">QUESTIONS</h3>     
-        
         <div class="pull-right">
           <button type="button" id="question-add-button" onclick="FirstQuestion(<?= $current_id ?>)" class = "btn"><span class="glyphicon glyphicon-plus-sign btn-icon"></span>ADD A QUESTION</button>
         </div>

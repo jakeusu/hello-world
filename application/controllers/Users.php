@@ -273,7 +273,10 @@ class Users extends ChatController
 	        }
 	        $res = $res.$newID;// add non-user's id to the chat occupants
 		}
-		if($page == 4) echo $res; // id1/id2/id3
+		if($page == 4){
+			echo $res; // id1/id2/id3
+			exit;	
+		} 
 
 
 

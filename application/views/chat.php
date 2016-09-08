@@ -360,9 +360,7 @@
       </div>
 
       <div class="col-sm-6">
-        <button type = "button" class="pull-right dropdown-toggle ob sidepanel-open-button chat-more-button" data-toggle="dropdown" style="margin-top:-7px;">
-          HIDE DETAILS
-        </button>
+        <button type = "button" class="pull-right dropdown-toggle ob sidepanel-open-button chat-more-button" data-toggle="dropdown" style="margin-top:-7px;">HIDE DETAILS</button>
       </div>
 
       

@@ -13,6 +13,7 @@
       <meta property="og:image" content="<?= asset_base_url()?>/images/onlinkedIn.jpg" />
       <meta property="og:image:width" content="245" />
       <meta property="og:image:height" content="150" />
+      
 
       <title><?php if(isset($page_title)) echo $page_title; ?></title>
       <link rel="shortcut icon" href="<?= asset_base_url()?>/images/favicon.png">
@@ -244,6 +245,124 @@
                 </div>
               </div>
             </div>
+
+            <div id="NewGroupChatDialog" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header" style="background: #72B7F8;">
+                    <h4 class="modal-title" style="color:white;">Create New Group Chat</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div id="channel_edit">
+                        <label class="d-label">
+                          <span>DETAILS</span>
+                          <input type="text" placeholder="Group chat name" id="groupname" onkeyup="enterhandle(event, this)">
+                        </label>
+                        <label class="d-label">
+                          <span>ADD MEMBERS</span>
+                          <div class="row canvas">
+                          <input type="text" placeholder="Search email" id="g_add_email" onkeyup="handle(event, this)">
+                          <button class="ob pull-right" onclick="add_non_user_to_add()" style="position:absolute;top:5px;right:5px;">add</button>
+                          </div>
+                        </label>
+
+                        <ul id="g_selected" class="row setting-item">
+                        </ul>
+
+                        <ul id="g_contacts" class="scrollbar row setting-item" style="max-height:200px;">
+                        </ul>
+                    </div>
+                  </div>
+                  <div class="modal-footer" style="text-align:center;">
+                      <button class="btn pull-right wtext" id="NGD_Cancel_Button" onclick="onCancelNG()" style="background: #72B7F8">Cancel</button>
+                      <button class="pull-right btn wtext" id="NGD_Create_Button" onclick="onCreateNG()" style="background: #72B7F8"><span class="glyphicon glyphicon-send"></span> Create Chat</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="NewPrivateChatDialog" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header" style="background: #72B7F8;">
+                    <h4 class="modal-title" style="color:white;">Create New 1:1 Chat</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div id="channel_edit">
+                      <label class="d-label">
+                        <span>CHAT WITH</span>
+                        <div class="row canvas">
+                          <input type="text" placeholder="Search email" id="p_add_email" onkeyup="handle(event, this)">
+                          <button class="ob pull-right" onclick="add_non_user_to_private()" style="position:absolute;top:5px;right:5px;">add</button>
+                        </div>
+                      </label>
+
+                      <ul id="p_selected" class="row setting-item">
+                      </ul>
+
+                      <ul id="p_contacts" class="scrollbar row setting-item" style="max-height:200px;">
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="modal-footer" style="text-align:center;">
+                      <button class="btn pull-right wtext" id="NPD_Cancel_Button" onclick="onCancelNP()" style="background: #72B7F8"> Cancel</button>
+                      <button class="pull-right btn wtext" id="NPD_Create_Button" onclick="onCreateNP()" style="background: #72B7F8"><span class="glyphicon glyphicon-send"></span> Create Chat</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="AddMemberDialog" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header" style="background: #72B7F8;">
+                    <h4 class="modal-title" style="color:white;">Add New Members</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div id="channel_edit">
+                        <label class="d-label">
+                          <span>ADD MEMBERS</span>
+                          <div class="row canvas">
+                          <input type="text" placeholder="Search email" id="a_add_email" onkeyup="handle(event, this)">
+                          <button class="ob pull-right" onclick="add_non_user_to_add()" style="position:absolute;top:5px;right:5px;">add</button>
+                          </div>
+                        </label>
+
+                        <ul id="a_selected" class="row setting-item">
+                        </ul>
+
+                        <ul id="a_contacts" class="scrollbar row setting-item" style="max-height:200px;">
+                        </ul>
+                    </div>
+                  </div>
+                  <div class="modal-footer" style="text-align:center;">
+                      <button class="btn pull-right wtext" id="AMD_Cancel_Button" onclick="onCancelAM()" style="background: #72B7F8">Cancel</button>
+                      <button class="pull-right btn wtext" id="AMD_Create_Button" onclick="onAddMember()" style="background: #72B7F8"><span class="glyphicon glyphicon-send"></span> Send Invite</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="ShowUserListDialog" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header" style="background: #72B7F8;">
+                    <h4 class="modal-title" id="question-popup-title" style="color:white;"></h4>
+                  </div>
+                  <div class="modal-body">
+                    <div id="channel_edit">           
+                        <ul id="q_contacts" class="scrollbar row setting-item" style="height:200px;">
+                        </ul>
+                    </div>
+                  </div>
+                  <div class="modal-footer" style="text-align:center;">
+                      <button class="btn pull-right wtext" onclick="onCancelPopup()" style="background:#72B7F8">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
 
             
         <script>
