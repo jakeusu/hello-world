@@ -1,5 +1,5 @@
 <script type="text/javascript" src="//platform.linkedin.com/in.js">
-    api_key: 789n2d8njlgknx
+    api_key: 78kvui9d2pw0jq
     authorize: true
 </script>
 <script src="<?php echo asset_base_url()?>/libs/jquery.min.js" type="text/javascript"></script>
