@@ -353,6 +353,23 @@
       
 </div>
 
+<div class="row border1234 white_back padding_sm">
+  <div class="col-sm-9 col-xs-12">
+    <img class="pull-left" src="" width="70" height="70">
+    <div class="pull-left">
+      <div class="col-xs-12">
+        Not sure where to start? Need some question suggestions?
+      </div>
+      <div class="col-xs-12">
+        Jog, your memory and conduct a self-assessment on your business with out list of common and critical business questions. You can also browse our list of featured Relayy advisors.
+      </div>
+    </div>  
+  </div>
+  <div class="col-sm-3 col-xs-12">
+    <button class="ob pull-right">EXPLORE QUESTIONS & EXPERTS</button>
+  </div>
+</div>
+
 
 
   <?php if($u_type == 3 && sizeof($array_question) == 0){ ?>
