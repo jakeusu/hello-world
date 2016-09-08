@@ -2,8 +2,9 @@
 
 <script src="<?php echo asset_base_url()?>/js/dist/hello.all.js"></script>
 <script type="text/javascript" src="//platform.linkedin.com/in.js">
-    //75yg45wf5h9itq
-    //773hd1xznuccvv
+    //app: 78kvui9d2pw0jq
+    //dev: 789n2d8njlgknx
+    //staging: 78mfwbj5aj9mwy
     api_key: 78mfwbj5aj9mwy
     scope: w_share
     //onLoad: onLinkedInLoad

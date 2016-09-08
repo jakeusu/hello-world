@@ -1,8 +1,7 @@
 <script type="text/javascript" src="//platform.linkedin.com/in.js">
-    //75yg45wf5h9itq
-    //773hd1xznuccvv
-    //75m1r350yxrrk5
-    //78kvui9d2pw0jq
+    //app: 78kvui9d2pw0jq
+    //dev: 789n2d8njlgknx
+    //staging: 78mfwbj5aj9mwy
     api_key: 78mfwbj5aj9mwy
     authorize: true
 </script>
