@@ -2,7 +2,10 @@
     //app: 78kvui9d2pw0jq
     //dev: 789n2d8njlgknx
     //staging: 78mfwbj5aj9mwy
+<<<<<<< HEAD
     api_key: 78mfwbj5aj9mwy
+=======
+>>>>>>> dev
     authorize: true
 </script>
 
@@ -33,7 +36,11 @@
       var iOS = ['iPad', 'iPhone', 'iPod'].indexOf(navigator.platform) >= 0;
         if(1){
               hello.init({
+<<<<<<< HEAD
                 linkedin: '78mfwbj5aj9mwy'
+=======
+                linkedin: '789n2d8njlgknx'
+>>>>>>> dev
               });
 
               hello('linkedin').login({scope:'email, publish'}).then(function() {

@@ -23,6 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
+<<<<<<< HEAD
 $config['base_url'] = 'http://staging.relayy.io/';
 $config['admin_email'] = 'jake@relayy.io';
 $config['admin_id'] = '401565172';

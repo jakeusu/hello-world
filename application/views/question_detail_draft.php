@@ -353,6 +353,23 @@
       
 </div>
 
+<div class="row border1234 white_back padding_xs col-text">
+  <div class="col-sm-9 col-xs-12 canvas">
+    <img class="pull-left explore-section-image" src="<?= asset_base_url().'/images/lamp.png' ?>" width="70" height="70">
+    <div class="explore-section">
+      <h5 class="col-xs-12 BT">
+        Not sure where to start? Need some question suggestions?
+      </h5>
+    </div>
+    <div class="explore-section">
+        Jog, your memory and conduct a self-assessment on your business with out list of common and critical business questions. You can also browse our list of featured Relayy advisors.
+    </div>  
+  </div>
+  <div class="col-sm-3 col-xs-12">
+    <a href="http://relayy.io/explore" target="_blank"><button class="ob pull-right col-text">EXPLORE QUESTIONS & EXPERTS</button></a>
+  </div>
+</div>
+
 
 
   <?php if($u_type == 3 && sizeof($array_question) == 0){ ?>

@@ -108,6 +108,17 @@
   font-weight: bold;
 }
 
+.explore-section{
+  padding-left: 80px;
+  line-height:1.4
+}
+
+.explore-section-image{
+  position: absolute;
+  left: 0px;
+  top: 10px;
+}
+
 .gray-80{
   color: #808080;
 }
