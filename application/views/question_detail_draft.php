@@ -366,7 +366,7 @@
     </div>  
   </div>
   <div class="col-sm-3 col-xs-12">
-    <a href="http://relayy.io/explore" target="_blank"><button class="ob pull-right col-text">EXPLORE QUESTIONS & EXPERTS</button></a>
+    <a href="http://relayy.io/explore" target="_blank"><button class="ob pull-right col-text" style="font-size:14px; margin-left:30px;">EXPLORE QUESTIONS & EXPERTS</button></a>
   </div>
 </div>
 
