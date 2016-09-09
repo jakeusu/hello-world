@@ -307,7 +307,7 @@ class Chat extends ChatController
         foreach (json_decode($res->{TBL_CHAT_OCCUPANTS}) as $occupant) {//send email or summary to all occupants except yourself( Entrep: approve notify, advisor: invite notify)
                 $tUser = $this->muser->get($occupant);
                 if($tUser->{TBL_USER_EMAIL} === $this->cemail) continue;
-                if($tUser->{TBL_USER_TYPE} == 3){
+                if(0){
                     $opt = $this->moption->get($tUser->{TBL_USER_ID}); 
                     if($opt[0][TBL_OPTION_APPROVE] == 1){
                         $this->updateApprove($res->{TBL_CHAT_NAME}, $this->cemail, $did, $tUser->{TBL_USER_ID});
