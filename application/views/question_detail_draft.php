@@ -353,7 +353,7 @@
       
 </div>
 
-<div class="row border1234 white_back padding_xs col-text">
+<div class="row white_back padding_xs col-text">
   <div class="col-sm-9 col-xs-12 canvas">
     <img class="pull-left explore-section-image" src="<?= asset_base_url().'/images/lamp.png' ?>" width="70" height="70">
     <div class="explore-section">
